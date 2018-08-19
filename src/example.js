@@ -1,26 +1,44 @@
 import React, { Component } from "react";
+import classNames from "classnames";
 
-import Select, { components } from "react-select";
+import Select from "react-select";
+// import type ContainerProps from "react-select";
 import { colourOptions } from "./docs/data";
+import "./ui/custom.css";
+import "./ui/lib.css";
+import "./ui/react-select.css";
 
-const ControlComponent = props => (
-  <div className="Options">
-    {<p>Custom Control</p>}
-    <div {...props} />
+const Control = (props) => (
+  <div className="widget-dropdown-type-ahead-control">
+    { props.children }
   </div>
 );
 
-const MenuComponent = props => (
-  <div className="Menuthing">
-    <div {...props} />
+const Menu = (props) => (
+  <div className="widget-dropdown-type-ahead-menu" >
+    { props.children }
+  </div>
+);
+
+const MenuList = (props) => (
+  <div className="widget-dropdown-type-ahead-menu-list" >
+    { props.children }
   </div>
 );
 
 const NoOptionsMessage = props => (
-  <div className="NoOptionsMessage">No option here</div>
+  <div className="no-options">No options</div>
 );
 
-const Placeholder = props => <div className="Placeholder" {...props} />;
+const Placeholder = props => (<div className="widget-dropdown-type-ahead-placeholder" {...props} />);
+const Option = (props ) => {
+  const { innerProps, isDisabled, isFocused, isSelected } = props;
+
+  // eslint-disable-next-line
+    return (!isDisabled ?
+    (<div className={classNames("widget-dropdown-type-ahead-options", isFocused? "is-focused" : null, isSelected? "is-selected": null)} {...innerProps }> { props.children }</div>):
+    null);
+};
 
 const ClearIndicator = props => {
   const {
@@ -29,14 +47,14 @@ const ClearIndicator = props => {
   return React.createElement(
     "div",
     {
-      className: "widget-dropdown-type-head-clear-container",
+      className: "widget-dropdown-type-ahead-clear-container",
       ...restInnerProps,
       ref
     },
     React.createElement(
       "svg",
       {
-        className: "widget-dropdown-type-head-clear",
+        className: "widget-dropdown-type-ahead-clear",
         focusable: false,
         height: 20,
         viewBox: "0 0 20 20",
@@ -58,14 +76,14 @@ const DropdownIndicator = props => {
   return React.createElement(
     "div",
     {
-      className: "widget-dropdown-type-head-clear-container",
+      className: "widget-dropdown-type-ahead-dropdown-container",
       ...restInnerProps,
       ref
     },
     React.createElement(
       "svg",
       {
-        className: "widget-dropdown-type-head-arrow",
+        className: "widget-dropdown-type-ahead-dropdown",
         focusable: false,
         height: 20,
         viewBox: "0 0 20 20",
@@ -80,43 +98,52 @@ const DropdownIndicator = props => {
   );
 };
 
-const Input = props => <input className="mx-input" {...props} />;
+const Input = (props) => {
+  const { isDisabled } = props;
+  // return (<components.Input className={classNames("mx-input", isDisabled? "disabled" : null )} {...props} />);
+return (<input className={classNames("mx-input", isDisabled? "disabled" : null )} {...props} />);
+};
 const IndicatorsContainer = ({ props, children }) => (
-  <div className="mx-IndicatorsContainer" {...props}>
+  <div className="widget-dropdown-type-ahead-indicators-container" {...props}>
     {children}
   </div>
 );
 
 const ValueContainer = ({ props, children }) => (
-  <div className="mx-ValueContainer" {...props}>
+  <div className="widget-dropdown-type-ahead-value-container" {...props}>
     {children}
   </div>
 );
 
-const SelectContainer = ({ props, children }) => (
-  <div className="mx-SelectContainer" {...props}>
+const SelectContainer = ({ props , children }) => {
+// const { isDisabled } = props; , !isDisabled? "disabled": null
+// const { onKeyDown} = props; TODO: create on keydown event
+
+return (
+  <div className={classNames("widget-dropdown-type-ahead-select-container", children[1].props.isDisabled? "disabled": null )} { ...props }>
     {children}
   </div>
 );
+};
 
 const SingleValue = ({ props, children }) => (
-  <div className="mx-SingleValue" {...props}>
+  <div className="widget-dropdown-type-ahead-single-value" {...props}>
     {children}
   </div>
 );
 
-type State = {};
-
-export default class CustomControl extends Component<*, State> {
+export default class CustomControl extends Component {
   state = {};
   render() {
     return (
+      <div>
       <Select
-        // defaultValue={colourOptions[0]}
+        defaultValue={colourOptions[0]}
         isClearable
+        // isDisabled = {true}
         components={{
-          Control: ControlComponent,
-          Menu: MenuComponent,
+          Control,
+          Menu,
           NoOptionsMessage,
           Input,
           ValueContainer,
@@ -126,13 +153,30 @@ export default class CustomControl extends Component<*, State> {
           ClearIndicator,
           DropdownIndicator,
           IndicatorsContainer,
-          MenuList: MenuComponent,
+          MenuList,
+          Option,
           IndicatorSeparator: null
         }}
         isSearchable
         name="color"
         options={colourOptions}
+        onChange = { this._onChange }
       />
+      <Select
+        classNamePrefix= "react-select"
+        defaultValue={colourOptions[0]}
+        // isDisabled = {true}
+        isClearable
+        isSearchable
+        name="color"
+        options={colourOptions}
+        onChange = { this._onChange }
+      />
+      </div>
     );
+  }
+
+   _onChange = (value) => {
+      console.log(value);
   }
 }
