@@ -2,35 +2,34 @@ import React, { Component } from "react";
 import classNames from "classnames";
 
 import Select from "react-select";
-// import type ContainerProps from "react-select";
 import { colourOptions } from "./docs/data";
 import "./ui/custom.css";
 import "./ui/lib.css";
 import "./ui/react-select.css";
 
 const Control = (props) => (
-  <div className="widget-dropdown-type-ahead-control">
+  <div className={classNames("widget-dropdown-type-ahead-control")}>
     { props.children }
   </div>
 );
 
 const Menu = (props) => (
-  <div className="widget-dropdown-type-ahead-menu" >
+  <div className="widget-dropdown-type-ahead-menu">
     { props.children }
   </div>
 );
 
 const MenuList = (props) => (
-  <div className="widget-dropdown-type-ahead-menu-list" >
+  <div className="widget-dropdown-type-ahead-menu-list">
     { props.children }
   </div>
 );
 
-const NoOptionsMessage = props => (
+const NoOptionsMessage = (props) => (
   <div className="no-options">No options</div>
 );
 
-const Placeholder = props => (<div className="widget-dropdown-type-ahead-placeholder" {...props} />);
+const Placeholder = (props) => (<div className="widget-dropdown-type-ahead-placeholder" {...props} />);
 const Option = (props ) => {
   const { innerProps, isDisabled, isFocused, isSelected } = props;
 
@@ -101,15 +100,18 @@ const DropdownIndicator = props => {
 const Input = (props) => {
   const { isDisabled } = props;
   // return (<components.Input className={classNames("mx-input", isDisabled? "disabled" : null )} {...props} />);
-return (<input className={classNames("mx-input", isDisabled? "disabled" : null )} {...props} />);
+  return (
+    <input className={classNames("mx-input","form-control", isDisabled? "disabled" : null )} {...props} />
+  );
 };
+
 const IndicatorsContainer = ({ props, children }) => (
   <div className="widget-dropdown-type-ahead-indicators-container" {...props}>
     {children}
   </div>
 );
 
-const ValueContainer = ({ props, children }) => (
+const ValueContainer = ({ children, props }) => (
   <div className="widget-dropdown-type-ahead-value-container" {...props}>
     {children}
   </div>
@@ -120,10 +122,10 @@ const SelectContainer = ({ props , children }) => {
 // const { onKeyDown} = props; TODO: create on keydown event
 
 return (
-  <div className={classNames("widget-dropdown-type-ahead-select-container", children[1].props.isDisabled? "disabled": null )} { ...props }>
+  <div className={classNames("widget-dropdown-type-ahead-select-container",children[1].props.isDisabled? "disabled": null )} { ...props } onKeyDown = {this._onChange}>
     {children}
   </div>
-);
+  );
 };
 
 const SingleValue = ({ props, children }) => (
@@ -158,10 +160,11 @@ export default class CustomControl extends Component {
           IndicatorSeparator: null
         }}
         isSearchable
-        name="color"
+        name="colors"
         options={colourOptions}
         onChange = { this._onChange }
       />
+      <div style = {{'paddingBottom':'200px'}}/>
       <Select
         classNamePrefix= "react-select"
         defaultValue={colourOptions[0]}
