@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import classNames from "classnames";
 
 import Select from "react-select";
-import { Typeahead } from "react-bootstrap-typeahead";
-// require ("https://unpkg.com/react-bootstrap-typeahead/css/Typeahead.css");
 import { colourOptions } from "./docs/data";
 import "./ui/custom.css";
 import "./ui/lib.css";
@@ -91,7 +89,7 @@ const DropdownIndicator = props => {
       "svg",
       {
         className: "widget-dropdown-type-ahead-dropdown",
-        focusable: false,
+        // focusable: false,
         height: 20,
         viewBox: "0 0 20 20",
         width: 20
@@ -159,7 +157,7 @@ export default class CustomControl extends Component {
   state = {};
   render() {
     return (
-      <div>
+      <div style={{"width": "700px"}}>
         <Select
           defaultValue={colourOptions[0]}
           isClearable
@@ -184,13 +182,6 @@ export default class CustomControl extends Component {
           name="colors"
           options={colourOptions}
           onChange={this._onChange}
-        />
-        <div style={{ paddingBottom: "200px" }} />
-        <Typeahead
-          labelKey="label"
-          multiple={false}
-          options={colourOptions}
-          placeholder="Choose a color.."
         />
       </div>
     );
