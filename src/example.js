@@ -157,7 +157,8 @@ export default class CustomControl extends Component {
   state = {};
   render() {
     return (
-      <div style={{"width": "700px"}}>
+      <div style={{ width: "700px" }}>
+        <h1>React-select custom classes and styles</h1>
         <Select
           defaultValue={colourOptions[0]}
           isClearable
